@@ -1,30 +1,38 @@
-const { handleCashout, handleBet, runCrashRound } = require("../services/socketService");
+const {
+  handleCashout,
+  handleBet,
+  startGameLoop,
+  stopGameLoop,
+} = require("../services/socketService");
 
-/**
- * Initializes all WebSocket event listeners and starts the crash game loop.
- * @param {SocketIO.Server} io - The Socket.IO server instance
- */
+let activeConnections = 0;
+
 function initSocket(io) {
   io.on("connection", (socket) => {
-    console.log("🔌 Client connected");
+    activeConnections++;
+    console.log("✅ Client connected. Total:", activeConnections);
 
-    // Listen for client requesting to cash out
-    socket.on("cashout", (data) => {
-      handleCashout(io, socket, data);
-    });
+    if (activeConnections === 1) {
+      startGameLoop(io);  // 🔥 Start game only when first client connects
+    }
 
-    // Listen for a new bet placement from client
     socket.on("place_bet", (data) => {
       handleBet(data);
     });
 
+    socket.on("cashout", (data) => {
+      handleCashout(io, socket, data);
+    });
+
     socket.on("disconnect", () => {
-      console.log("❌ Client disconnected");
+      activeConnections--;
+      console.log("❌ Client disconnected. Total:", activeConnections);
+
+      if (activeConnections === 0) {
+        stopGameLoop();  // 🧯 Stop game when no clients are online
+      }
     });
   });
-
-  // Start the repeating crash game loop
-  runCrashRound(io);
 }
 
 module.exports = { initSocket };

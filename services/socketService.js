@@ -9,62 +9,71 @@ let currentMultiplier = 1.0;
 let bets = [];
 let interval = null;
 
-/**
- * Main game loop: runs crash game rounds continuously.
- * Emits multiplier updates and crash events to connected clients.
- */
-function runCrashRound(io) {
-  const roundLoop = async () => {
-    const roundId = Date.now().toString(); // Unique round identifier
-    const seed = generateSeed();
-    const hash = getHash(seed, roundId);
-    const crashPoint = getCrashPoint(hash);
+let isRunning = false;
+let stopRequested = false;
 
-    currentRound = { roundId, seed, hash, crashPoint };
-    bets = [];
-    currentMultiplier = 1.0;
-
-    console.log(`\n🕹️  New Round Started | Crash at: ${crashPoint}`);
-    io.emit("roundStart", { roundId, crashPoint: "??", multiplier: 1.0 });
-
-    const startTime = Date.now();
-    interval = setInterval(async () => {
-      const elapsed = (Date.now() - startTime) / 1000;
-      currentMultiplier = Math.round((1 + elapsed * 0.05) * 100) / 100;
-
-      io.emit("multiplier", { multiplier: currentMultiplier });
-
-      // Crash the round when multiplier hits the crash point
-      if (currentMultiplier >= crashPoint) {
-        clearInterval(interval);
-        console.log(`💥 CRASHED at ${currentMultiplier}`);
-        io.emit("crash", { crashPoint, roundId, seed, hash });
-
-        // Record lost bets
-        for (const bet of bets) {
-          if (!bet.cashout) {
-            bet.won = false;
-            await Round.updateOne(
-              { roundId },
-              { $push: { bets: bet } },
-              { upsert: true }
-            );
-          }
-        }
-
-        // Start next round after delay
-        setTimeout(() => roundLoop(), 3000);
-      }
-    }, 100);
-  };
-
-  roundLoop();
+function startGameLoop(io) {
+  if (isRunning) return;
+  isRunning = true;
+  stopRequested = false;
+  runCrashRound(io);
 }
 
-/**
- * Handles incoming bets via WebSocket.
- * Ignores late bets or duplicates.
- */
+function stopGameLoop() {
+  stopRequested = true;
+}
+
+async function runCrashRound(io) {
+  if (stopRequested) {
+    console.log("🛑 Game stopped due to no connected users.");
+    isRunning = false;
+    return;
+  }
+
+  const roundId = Date.now().toString();
+  const seed = generateSeed();
+  const hash = getHash(seed, roundId);
+  const crashPoint = getCrashPoint(hash);
+
+  currentRound = { roundId, seed, hash, crashPoint };
+  bets = [];
+  currentMultiplier = 1.0;
+
+  console.log(`\n🕹️ New Round Started | Crash at: ${crashPoint}`);
+  io.emit("roundStart", { roundId, crashPoint: "??", multiplier: 1.0 });
+
+  const startTime = Date.now();
+
+  interval = setInterval(async () => {
+    if (stopRequested) {
+      clearInterval(interval);
+      isRunning = false;
+      console.log("🛑 Game loop interrupted mid-round.");
+      return;
+    }
+
+    const elapsed = (Date.now() - startTime) / 1000;
+    currentMultiplier = Math.round((1 + elapsed * 0.05) * 100) / 100;
+
+    io.emit("multiplier", { multiplier: currentMultiplier });
+
+    if (currentMultiplier >= crashPoint) {
+      clearInterval(interval);
+      console.log(`💥 CRASHED at ${currentMultiplier}`);
+      io.emit("crash", { crashPoint, roundId, seed, hash });
+
+      for (const bet of bets) {
+        if (!bet.cashout) {
+          bet.won = false;
+          await Round.updateOne({ roundId }, { $push: { bets: bet } }, { upsert: true });
+        }
+      }
+
+      setTimeout(() => runCrashRound(io), 3000);
+    }
+  }, 100);
+}
+
 function handleBet(data) {
   console.log("📥 WebSocket Bet received:", data);
 
@@ -94,10 +103,6 @@ function handleBet(data) {
   console.log("✅ Bet stored:", newBet);
 }
 
-/**
- * Handles player cashout requests over WebSocket.
- * Updates wallet, logs transaction, and emits event.
- */
 function handleCashout(io, socket, data) {
   console.log("👉 Received cashout request for:", data.playerId);
   console.log("📊 Current active bets:", bets.map(b => b.playerId));
@@ -123,14 +128,13 @@ function handleCashout(io, socket, data) {
   bet.won = true;
 
   const winAmount = bet.cryptoAmount * currentMultiplier;
-  const price = bet.price ?? 1; // fallback price
+  const price = bet.price ?? 1;
   const usdAmount = winAmount * price;
 
   if (!bet.price) {
     console.warn(`⚠️ Missing price for player ${bet.playerId}. Defaulting to $1`);
   }
 
-  // Update player's wallet and log the cashout
   Player.findById(bet.playerId).then(player => {
     player.wallets[bet.currency] += winAmount;
 
@@ -170,7 +174,8 @@ function handleCashout(io, socket, data) {
 }
 
 module.exports = {
-  runCrashRound,
+  startGameLoop,
+  stopGameLoop,
   handleBet,
   handleCashout,
 };
