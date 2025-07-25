@@ -5,7 +5,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 const redis = new Redis(process.env.REDIS_URL, {
-  tls: {}
+  tls: process.env.REDIS_URL?.startsWith("rediss://") ? {} : undefined
 });
 
 const COINGECKO_URL =
