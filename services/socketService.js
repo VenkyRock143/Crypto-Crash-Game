@@ -10,8 +10,8 @@ let bets = [];
 let interval = null;
 
 /**
- * Main game loop: runs crash game rounds continuously.
- * Emits multiplier updates and crash events to connected clients.
+ Main game loop: runs crash game rounds continuously.
+ Emits multiplier updates and crash events to connected clients.
  */
 function runCrashRound(io) {
   const roundLoop = async () => {
@@ -62,8 +62,8 @@ function runCrashRound(io) {
 }
 
 /**
- * Handles incoming bets via WebSocket.
- * Ignores late bets or duplicates.
+ Handles incoming bets via WebSocket.
+ Ignores late bets or duplicates.
  */
 function handleBet(data) {
   console.log("📥 WebSocket Bet received:", data);
@@ -95,8 +95,8 @@ function handleBet(data) {
 }
 
 /**
- * Handles player cashout requests over WebSocket.
- * Updates wallet, logs transaction, and emits event.
+ Handles player cashout requests over WebSocket.
+ Updates wallet, logs transaction, and emits event.
  */
 function handleCashout(io, socket, data) {
   console.log("👉 Received cashout request for:", data.playerId);

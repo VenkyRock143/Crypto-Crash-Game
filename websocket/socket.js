@@ -1,8 +1,8 @@
 const { handleCashout, handleBet, runCrashRound } = require("../services/socketService");
 
 /**
- * Initializes all WebSocket event listeners and starts the crash game loop.
- * @param {SocketIO.Server} io - The Socket.IO server instance
+Initializes all WebSocket event listeners and starts the crash game loop.
+@param {SocketIO.Server} io - The Socket.IO server instance
  */
 function initSocket(io) {
   io.on("connection", (socket) => {
