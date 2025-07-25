@@ -4,6 +4,10 @@ A real-time multiplayer crypto crash betting game, built with Node.js, Express, 
 
 ---
 
+**Live Demo:** [Crypto-Crash-game](https://crypto-crash-game-mqs3.onrender.com/)
+
+---
+
 ## 🚀 Project Overview
 
 This game simulates a crypto-style crash game where:
