@@ -24,7 +24,7 @@ This game simulates a crypto-style crash game where:
 * **Backend:** Node.js, Express
 * **WebSocket:** Socket.IO
 * **Database:** MongoDB + Mongoose
-* **API:** CoinGecko (crypto price fetch)
+* **API:** CoinMarketCap (crypto price fetch)
 * **Frontend (for testing):** Plain HTML + JS + Socket.IO client
 
 ---
@@ -204,7 +204,7 @@ This ensures:
 
 ## 💱 USD to Crypto Conversion
 
-* Uses **CoinGecko API** to fetch live prices every 10 seconds
+* Uses **CoinMarketCap** to fetch live prices every 10 seconds
 * Players input **USD**, backend calculates crypto amount
 
 Example:
