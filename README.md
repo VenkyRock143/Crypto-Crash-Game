@@ -48,6 +48,7 @@ BACKEND/
 │   └── seed.js
 ├── services/
 │   ├── crashAlgorithm.js
+│   ├── priceFetcher.js
 │   ├── priceService.js
 │   ├── socketService.js
 │   └── walletService.js
@@ -55,7 +56,6 @@ BACKEND/
 │   └── socket.js
 ├── .env
 ├── .gitignore
-├── config.js
 ├── Crypto-Crash-Game.postman_collection.json
 ├── package-lock.json
 ├── package.json
@@ -86,6 +86,7 @@ npm install
 PORT=5000
 MONGO_URI=your_mongodb_connection_string
 COINGECKO_API=https://api.coingecko.com/api/v3/simple/price
+REDIS_URL=redis://default:<password>@<host>:<port>
 ```
 
 4. **Seed database with sample players:**
