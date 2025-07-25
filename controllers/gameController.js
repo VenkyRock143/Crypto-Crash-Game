@@ -52,11 +52,18 @@ exports.placeBet = async (req, res) => {
       message: "Bet placed",
       cryptoAmount,
       price,
-      txHash
+      txHash,
     });
 
   } catch (err) {
     console.error("💥 Bet error:", err);
+
+    if (err.response?.status === 429) {
+      return res.status(503).json({
+        error: "Rate limit exceeded. Please try again after a short while.",
+      });
+    }
+
     res.status(500).json({ error: "Server error" });
   }
 };
