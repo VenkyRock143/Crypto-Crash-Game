@@ -89,7 +89,7 @@ npm install
 ```env
 PORT=5000
 MONGO_URI=your_mongodb_connection_string
-COINGECKO_API=https://api.coingecko.com/api/v3/simple/price
+CMC_API_KEY=your_coinmarketcap_api_key_here
 REDIS_URL=redis://default:<password>@<host>:<port>
 ```
 
