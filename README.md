@@ -235,7 +235,7 @@ Includes:
 
 ## 👨‍💻 Author
 
-Venky (Full-Stack Developer)
+Balusani Venkatesh (Full-Stack Developer)
 
 ---
 
