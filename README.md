@@ -24,7 +24,7 @@ This game simulates a crypto-style crash game where:
 * **Backend:** Node.js, Express
 * **WebSocket:** Socket.IO
 * **Database:** MongoDB + Mongoose
-* **API:** CoinGecko (crypto price fetch)
+* **API:** CoinMarketCap (crypto price fetch)
 * **Frontend (for testing):** Plain HTML + JS + Socket.IO client
 
 ---
@@ -32,8 +32,7 @@ This game simulates a crypto-style crash game where:
 ## 📂 Folder Structure
 
 ```
-```bash
-BACKEND/
+Crypto-Crash-Game/
 ├── controllers/
 │   ├── gameController.js
 │   ├── priceController.js
@@ -74,8 +73,8 @@ BACKEND/
 1. **Clone the repository:**
 
 ```bash
-git clone https://github.com/your-username/crypto-crash-game.git
-cd crypto-crash-game
+git clone https://github.com/VenkyRock143/Crypto-Crash-Game.git
+cd Crypto-Crash-Game
 ```
 
 2. **Install dependencies:**
@@ -89,14 +88,14 @@ npm install
 ```env
 PORT=5000
 MONGO_URI=your_mongodb_connection_string
-COINGECKO_API=https://api.coingecko.com/api/v3/simple/price
+CMC_API_KEY=your_coinmarketcap_api_key_here
 REDIS_URL=redis://default:<password>@<host>:<port>
 ```
 
 4. **Seed database with sample players:**
 
 ```bash
-node scripts/seedPlayers.js
+node scripts/seed.js
 ```
 
 5. **Start the server:**
@@ -189,7 +188,7 @@ Each round is determined fairly using:
 The crash point is calculated via a provably fair method:
 
 ```js
-const crash = Math.floor((100 / (1 - rand))) / 100;
+const crashPoint = Math.max(1.01, Math.min(20, Math.floor((100 / (1 - random)) / 100)));
 ```
 
 Clamped between `1.01x` and `20.00x`.
@@ -204,7 +203,7 @@ This ensures:
 
 ## 💱 USD to Crypto Conversion
 
-* Uses **CoinGecko API** to fetch live prices every 10 seconds
+* Uses **CoinMarketCap** to fetch live prices every 10 seconds
 * Players input **USD**, backend calculates crypto amount
 
 Example:
@@ -227,7 +226,7 @@ cryptoAmount = usdAmount / price
 
 ## 🧪 Postman Collection
 
-Import the file `CryptoCrash.postman_collection.json` into Postman.
+Import the file `Crypto-Crash-Game.postman_collection.json` into Postman.
 Includes:
 
 * Place Bet (POST)
