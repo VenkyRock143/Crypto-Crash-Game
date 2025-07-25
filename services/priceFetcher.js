@@ -5,28 +5,42 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 const redis = new Redis(process.env.REDIS_URL, {
-  tls: process.env.REDIS_URL?.startsWith("rediss://") ? {} : undefined
+  tls: process.env.REDIS_URL?.startsWith("rediss://") ? {} : undefined,
 });
 
-const COINGECKO_URL =
-  "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd";
+const CMC_API_URL = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest";
+const headers = {
+  "X-CMC_PRO_API_KEY": process.env.CMC_API_KEY,
+};
 
 async function fetchAndStorePrices() {
   try {
-    const response = await axios.get(COINGECKO_URL);
+    console.log("📡 Fetching BTC and ETH prices from CoinMarketCap...");
+
+    const response = await axios.get(CMC_API_URL, {
+      headers,
+      params: {
+        symbol: "BTC,ETH",
+        convert: "USD",
+      },
+    });
+
     const prices = {
-      BTC: response.data.bitcoin.usd,
-      ETH: response.data.ethereum.usd,
+      BTC: response.data.data.BTC.quote.USD.price,
+      ETH: response.data.data.ETH.quote.USD.price,
     };
-    await redis.set("crypto:price", JSON.stringify(prices), "EX", 60); // expires in 60 sec
-    console.log("✅ Prices updated:", prices);
+
+    await redis.set("crypto:price", JSON.stringify(prices), "EX", 60);
+    console.log("✅ Prices updated and cached:", prices);
   } catch (err) {
-    console.error("❌ Failed to fetch prices:", err.message);
+    console.error("❌ Failed to fetch prices:", err.response?.status || err.message);
+    if (err.response?.data) {
+      console.error("📨 Response:", JSON.stringify(err.response.data));
+    }
   }
 }
 
-// Every 30 seconds
+fetchAndStorePrices();
 setInterval(fetchAndStorePrices, 30000);
-fetchAndStorePrices(); // immediate fetch at startup
 
 module.exports = { fetchAndStorePrices };
