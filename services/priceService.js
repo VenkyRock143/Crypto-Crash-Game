@@ -4,12 +4,12 @@ let cachedPrices = {};
 let lastFetched = 0;
 
 /**
-Fetches the current USD price of a given cryptocurrency (BTC or ETH).
- 
-Uses a 10-second in-memory cache to reduce API calls.
- 
-@param {string} currency - 'BTC' or 'ETH'
-@returns {Promise<number>} - Current price in USD
+ * Fetches the current USD price of a given cryptocurrency (BTC or ETH).
+ * 
+ * Uses a 10-second in-memory cache to reduce API calls.
+ *
+ * @param {string} currency - 'BTC' or 'ETH'
+ * @returns {Promise<number>} - Current price in USD
  */
 async function getCryptoPrice(currency) {
   const now = Date.now();
