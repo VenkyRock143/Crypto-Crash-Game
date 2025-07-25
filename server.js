@@ -5,6 +5,8 @@ const http = require("http");
 const socketIO = require("socket.io");
 const cors = require("cors");
 const path = require("path");
+require("./services/priceFetcher"); // start price updater
+
 
 const { initSocket } = require("./websocket/socket");
 

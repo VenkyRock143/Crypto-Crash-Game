@@ -1,4 +1,6 @@
 const axios = require("axios");
+const Redis = require("ioredis");
+const redis = new Redis(process.env.REDIS_URL);
 
 let cachedPrices = {};
 let lastFetched = 0;
@@ -15,6 +17,16 @@ async function retry(fn, retries = 3, delay = 500) {
     await new Promise(res => setTimeout(res, delay));
     return retry(fn, retries - 1, delay * 2);
   }
+}
+
+/**
+ * Gets the latest crypto price (BTC or ETH) from Redis cache
+ */
+async function getCryptoPrice(currency) {
+  const data = await redis.get("crypto:price");
+  if (!data) throw new Error("Price not available in cache");
+  const prices = JSON.parse(data);
+  return prices[currency];
 }
 
 async function fetchPrices() {
