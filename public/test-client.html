@@ -51,12 +51,6 @@
 
   <h1>Crypto Crash Game</h1>
 
-
-
-
-  
-
-
   <!-- Player Input Section -->
   <label for="playerIdInput">Player ID:</label>
   <input id="playerIdInput" placeholder="Enter your Player ID" />
@@ -79,7 +73,7 @@
 
   <script src="https://cdn.socket.io/4.7.1/socket.io.min.js"></script>
   <script>
-    const socket = io("http://localhost:5000");
+    const socket = io(window.location.origin);
 
     // WebSocket event listeners
     socket.on("roundStart", () => log("🎮 New round started"));
