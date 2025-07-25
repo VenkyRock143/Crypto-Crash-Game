@@ -48,6 +48,7 @@ BACKEND/
 │   └── seed.js
 ├── services/
 │   ├── crashAlgorithm.js
+│   ├── priceFetcher.js
 │   ├── priceService.js
 │   ├── socketService.js
 │   └── walletService.js
