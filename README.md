@@ -28,17 +28,45 @@ This game simulates a crypto-style crash game where:
 ## 📂 Folder Structure
 
 ```
-.
-├── controllers/
-├── models/
-├── public/            # test-client.html UI
-├── routes/
-├── scripts/           # seedPlayers.js
-├── services/
-├── websocket/
-├── .env
-├── server.js
-└── package.json
+```bash
+📁 BACKEND
+├── 📁 controllers
+│   ├── gameController.js         # Handles bet placement and cashout (REST)
+│   ├── priceController.js        # Handles price fetching via CoinGecko
+│   └── walletController.js       # Returns player's wallet in crypto + USD
+│
+├── 📁 models
+│   ├── Player.js                 # Mongoose schema for player wallets
+│   ├── Round.js                  # Mongoose schema for game rounds
+│   └── Transaction.js            # Mongoose schema for transactions (bets/cashouts)
+│
+├── 📁 public
+│   └── test-client.html          # Frontend test UI for interacting with backend + WebSocket
+│
+├── 📁 routes
+│   ├── gameRoutes.js             # Routes for /api/game (place bet, cashout)
+│   └── walletRoutes.js           # Routes for /api/wallet (get balance, price)
+│
+├── 📁 scripts
+│   └── seed.js                   # MongoDB script to seed 3 sample players
+│
+├── 📁 services
+│   ├── crashAlgorithm.js         # Provably fair logic: seed, hash, crash point
+│   ├── priceService.js           # Fetch and cache live prices (BTC, ETH)
+│   ├── socketService.js          # Handles in-game WebSocket bet/cashout logic
+│   └── walletService.js          # Reusable wallet actions: deduct/add balance
+│
+├── 📁 websocket
+│   └── socket.js                 # Initializes and manages WebSocket lifecycle
+│
+├── .env                          # Environment config (Mongo URI, CoinGecko URL)
+├── .gitignore                   # Ignores node_modules and .env from versioning
+├── config.js                    # Optional config file for fallback env vars
+├── Crypto-Crash-Game.postman_collection.json   # Postman collection to test API endpoints
+├── package.json
+├── package-lock.json
+├── README.md
+└── server.js                    # Entry point: Express app, MongoDB setup, routes, socket.io
 ```
 
 ---
