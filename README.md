@@ -56,7 +56,6 @@ BACKEND/
 │   └── socket.js
 ├── .env
 ├── .gitignore
-├── config.js
 ├── Crypto-Crash-Game.postman_collection.json
 ├── package-lock.json
 ├── package.json
