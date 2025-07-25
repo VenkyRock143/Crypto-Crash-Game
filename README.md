@@ -33,7 +33,7 @@ This game simulates a crypto-style crash game where:
 
 ```
 ```bash
-BACKEND/
+Crypto-Crash-Game/
 ├── controllers/
 │   ├── gameController.js
 │   ├── priceController.js
@@ -75,7 +75,7 @@ BACKEND/
 
 ```bash
 git clone https://github.com/VenkyRock143/Crypto-Crash-Game.git
-cd crypto-crash-game
+cd Crypto-crash-Game
 ```
 
 2. **Install dependencies:**
@@ -227,7 +227,7 @@ cryptoAmount = usdAmount / price
 
 ## 🧪 Postman Collection
 
-Import the file `CryptoCrash.postman_collection.json` into Postman.
+Import the file `Crypto-Crash-Game.postman_collection.json` into Postman.
 Includes:
 
 * Place Bet (POST)
