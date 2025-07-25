@@ -1,73 +1,41 @@
-const axios = require("axios");
 const Redis = require("ioredis");
-const redis = new Redis(process.env.REDIS_URL);
 
-let cachedPrices = {};
-let lastFetched = 0;
-let isFetching = false;
-const CACHE_DURATION = 60000; // 60 seconds
+const redis = new Redis(process.env.REDIS_URL, {
+  tls: process.env.REDIS_URL?.startsWith("rediss://") ? {} : undefined,
+});
 
-// Retry helper with exponential backoff
-async function retry(fn, retries = 3, delay = 500) {
-  try {
-    return await fn();
-  } catch (err) {
-    if (retries <= 0) throw err;
-    console.warn(`⚠️ Retrying... (${3 - retries + 1})`);
-    await new Promise(res => setTimeout(res, delay));
-    return retry(fn, retries - 1, delay * 2);
-  }
-}
+let fallbackCache = {};
+let fallbackFetchedAt = 0;
+const FALLBACK_TTL = 60000; // 60 seconds
 
 /**
- * Gets the latest crypto price (BTC or ETH) from Redis cache
+ * Fetches the crypto price (BTC or ETH) from Redis cache.
+ * Falls back to in-memory cache if Redis is down.
+ *
+ * @param {string} currency - 'BTC' or 'ETH'
+ * @returns {Promise<number>} - Price in USD
  */
 async function getCryptoPrice(currency) {
-  const data = await redis.get("crypto:price");
-  if (!data) throw new Error("Price not available in cache");
-  const prices = JSON.parse(data);
-  return prices[currency];
-}
-
-async function fetchPrices() {
-  const response = await axios.get(
-    `${process.env.COINGECKO_API}?ids=bitcoin,ethereum&vs_currencies=usd`
-  );
-  return {
-    BTC: response.data.bitcoin.usd,
-    ETH: response.data.ethereum.usd,
-  };
-}
-
-async function getCryptoPrice(currency) {
-  const now = Date.now();
-
-  // If recently fetched, use cached version
-  if (now - lastFetched < CACHE_DURATION && cachedPrices[currency]) {
-    return cachedPrices[currency];
-  }
-
-  // If another request is already fetching, wait and return cached
-  if (isFetching && cachedPrices[currency]) {
-    console.log("🔄 Waiting for existing price fetch...");
-    return cachedPrices[currency];
-  }
-
-  isFetching = true;
   try {
-    const prices = await retry(fetchPrices);
-    cachedPrices = prices;
-    lastFetched = now;
-    return cachedPrices[currency];
-  } catch (err) {
-    console.error("❌ Price API failed:", err.response?.status || err.message);
-    if (cachedPrices[currency]) {
-      console.log("⚠️ Using stale cached price");
-      return cachedPrices[currency];
+    const cached = await redis.get("crypto:price");
+
+    if (!cached) {
+      throw new Error("⛔ No price data in Redis");
     }
-    throw err;
-  } finally {
-    isFetching = false;
+
+    const prices = JSON.parse(cached);
+    fallbackCache = prices;
+    fallbackFetchedAt = Date.now();
+    return prices[currency];
+  } catch (err) {
+    console.warn("⚠️ Redis unavailable, using fallback cache:", err.message);
+
+    const now = Date.now();
+    if (fallbackCache[currency] && now - fallbackFetchedAt < FALLBACK_TTL) {
+      return fallbackCache[currency];
+    }
+
+    throw new Error("❌ No valid crypto price available");
   }
 }
 
