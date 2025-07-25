@@ -25,6 +25,24 @@ This game simulates a crypto-style crash game where:
 
 ---
 
+## 📂 Folder Structure
+
+```
+.
+├── controllers/
+├── models/
+├── public/            # test-client.html UI
+├── routes/
+├── scripts/           # seedPlayers.js
+├── services/
+├── websocket/
+├── .env
+├── server.js
+└── package.json
+```
+
+---
+
 ## 🛠️ Setup Instructions
 
 1. **Clone the repository:**
@@ -95,17 +113,6 @@ Get wallet balances in crypto and USD
 {
   "BTC": { "crypto": 0.5, "usd": 15000 },
   "ETH": { "crypto": 2.0, "usd": 6000 }
-}
-```
-
-### `GET /api/wallet/prices`
-
-Fetch current crypto prices from CoinGecko
-
-```json
-{
-  "BTC": 29832,
-  "ETH": 1853
 }
 ```
 
@@ -201,21 +208,6 @@ Includes:
 
 ---
 
-## 📂 Folder Structure
-
-```
-.
-├── controllers/
-├── models/
-├── public/            # test-client.html UI
-├── routes/
-├── scripts/           # seedPlayers.js
-├── services/
-├── websocket/
-├── .env
-├── server.js
-└── package.json
-```
 
 ---
 
