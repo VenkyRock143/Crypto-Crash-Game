@@ -73,7 +73,13 @@
 
   <script src="https://cdn.socket.io/4.7.1/socket.io.min.js"></script>
   <script>
-    const socket = io(window.location.origin);
+    
+    const socket = io(
+  location.hostname === "localhost"
+    ? "http://localhost:5000"
+    : "https://crypto-crash-game-mqs3.onrender.com"
+);
+
 
     // WebSocket event listeners
     socket.on("roundStart", () => log("🎮 New round started"));
