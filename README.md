@@ -32,7 +32,6 @@ This game simulates a crypto-style crash game where:
 ## 📂 Folder Structure
 
 ```
-```bash
 Crypto-Crash-Game/
 ├── controllers/
 │   ├── gameController.js
