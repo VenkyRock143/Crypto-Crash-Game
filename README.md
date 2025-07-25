@@ -74,7 +74,7 @@ BACKEND/
 1. **Clone the repository:**
 
 ```bash
-git clone https://github.com/your-username/crypto-crash-game.git
+git clone https://github.com/VenkyRock143/Crypto-Crash-Game.git
 cd crypto-crash-game
 ```
 
