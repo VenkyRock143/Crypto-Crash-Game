@@ -75,7 +75,7 @@ Crypto-Crash-Game/
 
 ```bash
 git clone https://github.com/VenkyRock143/Crypto-Crash-Game.git
-cd Crypto-crash-Game
+cd Crypto-Crash-Game
 ```
 
 2. **Install dependencies:**
@@ -96,7 +96,7 @@ REDIS_URL=redis://default:<password>@<host>:<port>
 4. **Seed database with sample players:**
 
 ```bash
-node scripts/seedPlayers.js
+node scripts/seed.js
 ```
 
 5. **Start the server:**
@@ -189,7 +189,7 @@ Each round is determined fairly using:
 The crash point is calculated via a provably fair method:
 
 ```js
-const crash = Math.floor((100 / (1 - rand))) / 100;
+const crashPoint = Math.max(1.01, Math.min(20, Math.floor((100 / (1 - random)) / 100)));
 ```
 
 Clamped between `1.01x` and `20.00x`.
