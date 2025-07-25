@@ -14,7 +14,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"playerId\": \"68832ea8f80447df66cae42f\",\r\n  \"usdAmount\": 10,\r\n  \"currency\": \"BTC\"\r\n}\r\n",
+					"raw": "{\r\n  \"playerId\": \"68832ea8f80447df66cae42f\",\r\n  \"usdAmount\": 10,\r\n  \"currency\": \"BTC\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -22,8 +22,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:5000/api/game/bet",
-					"protocol": "http",
+					"raw": "localhost:5000/api/game/bet",
 					"host": [
 						"localhost"
 					],
@@ -38,7 +37,7 @@
 			"response": []
 		},
 		{
-			"name": "Get-Wallet_Balance",
+			"name": "Get-Wallet-Balance",
 			"request": {
 				"method": "GET",
 				"header": [],
