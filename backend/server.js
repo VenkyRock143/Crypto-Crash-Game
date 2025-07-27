@@ -76,7 +76,7 @@ app.get("/", (req, res) => {
 
       <h3>Test Clients:</h3>
       <p>👉 Localhost: <code><a href="/test-client.html" target="_blank">localhost:5000/test-client.html </a></code></p>
-      <p>👉 Online Demo: <code><a href="https://crypto-crash-game-mqs3.onrender.com/test-client.html">Render Deployment</a></code></p>
+      <p>👉 Online Demo: <code><a href="https://venky-crypto-crash-game.netlify.app/">Render Deployment</a></code></p>
     </html>
   `);
 });

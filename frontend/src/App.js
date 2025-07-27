@@ -11,7 +11,7 @@ export default function App() {
   const socketRef = useRef(null);
 
   useEffect(() => {
-    const socket = io('https://crypto-crash-game-mqs3.onrender.com', {
+    const socket = io('https://crypto-crash-game-as1x.onrender.com', {
       transports: ['websocket'],
     });
 
