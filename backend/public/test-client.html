@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Crypto Crash Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      padding: 20px;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+    }
+
+    label, input, select, button {
+      display: block;
+      margin: 10px 0;
+    }
+
+    input, select {
+      padding: 8px;
+      width: 250px;
+    }
+
+    button {
+      padding: 10px 16px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #218838;
+    }
+
+    #output {
+      margin-top: 20px;
+      padding: 10px;
+      background: #fff;
+      border: 1px solid #ccc;
+      height: 300px;
+      overflow-y: scroll;
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Crypto Crash Game</h1>
+
+  <!-- Player Input Section -->
+  <label for="playerIdInput">Player ID:</label>
+  <input id="playerIdInput" placeholder="Enter your Player ID" />
+
+  <label for="usdInput">USD Amount:</label>
+  <input type="number" id="usdInput" placeholder="e.g. 10" />
+
+  <label for="currencySelect">Currency:</label>
+  <select id="currencySelect">
+    <option value="BTC">BTC</option>
+    <option value="ETH">ETH</option>
+  </select>
+
+  <!-- Action Buttons -->
+  <button onclick="placeBet()">🎰 Place Bet</button>
+  <button onclick="sendCashout()">💸 Cashout</button>
+
+  <!-- Real-time Event Log -->
+  <div id="output"></div>
+
+  <script src="https://cdn.socket.io/4.7.1/socket.io.min.js"></script>
+  <script>
+    
+    const socket = io(
+  location.hostname === "localhost"
+    ? "http://localhost:5000"
+    : "https://crypto-crash-game-mqs3.onrender.com"
+);
+
+
+    // WebSocket event listeners
+    socket.on("roundStart", () => log("🎮 New round started"));
+    socket.on("multiplier", data => log(`📈 Multiplier: ${data.multiplier}`));
+    socket.on("crash", data => log(`💥 Crashed at: ${data.crashPoint}`));
+    socket.on("playerCashout", data => log(`💸 Player cashed out at: ${data.multiplier}`));
+    socket.on("cashoutSuccess", data => log(`✅ YOU cashed out: $${data.usd}`));
+    socket.on("cashoutFailed", data => log(`❌ Cashout failed: ${data.reason}`));
+
+    // Place a bet via REST + emit over WebSocket
+    function placeBet() {
+      const playerId = document.getElementById("playerIdInput").value.trim();
+      const usdAmount = parseFloat(document.getElementById("usdInput").value.trim());
+      const currency = document.getElementById("currencySelect").value;
+
+      if (!playerId || isNaN(usdAmount) || usdAmount <= 0) {
+        return alert("Please enter a valid Player ID and USD amount.");
+      }
+
+      fetch("/api/game/bet", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ playerId, usdAmount, currency })
+      })
+      .then(async res => {
+        if (!res.ok) {
+          const err = await res.json();
+          throw new Error(err.error || "Unexpected server error");
+        }
+        return res.json();
+      })
+      .then(data => {
+        log(`🟢 REST Bet placed: $${usdAmount} in ${currency} (${data.cryptoAmount})`);
+        socket.emit("place_bet", {
+          playerId,
+          usdAmount,
+          currency,
+          cryptoAmount: data.cryptoAmount,
+          price: data.price
+        });
+        log("📤 Sent WebSocket bet event");
+      })
+      .catch(err => {
+        log("❌ Bet failed: " + err.message);
+      });
+    }
+
+    // Emit cashout request over WebSocket
+    function sendCashout() {
+      const playerId = document.getElementById("playerIdInput").value.trim();
+      if (!playerId) {
+        return alert("Please enter your Player ID to cash out.");
+      }
+
+      socket.emit("cashout", { playerId });
+      log("📤 Sent cashout request");
+    }
+
+    // Logger helper
+    function log(message) {
+      const output = document.getElementById("output");
+      const line = document.createElement("div");
+      line.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+      output.appendChild(line);
+      if (output.children.length > 30) {
+        output.removeChild(output.firstChild);
+      }
+      output.scrollTop = output.scrollHeight;
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,61 @@
+{
+	"info": {
+		"_postman_id": "1d0e245f-7dfe-4304-86fd-010083bb6393",
+		"name": "Crypto-Crash-Game",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "47075645",
+		"_collection_link": "https://cryosat-architect-36761743-8387764.postman.co/workspace/Venky-Rock's-Workspace~c6a78095-f599-466f-8861-485b38bb073c/collection/47075645-1d0e245f-7dfe-4304-86fd-010083bb6393?action=share&source=collection_link&creator=47075645"
+	},
+	"item": [
+		{
+			"name": "Place-Bet",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"playerId\": \"68832ea8f80447df66cae42f\",\r\n  \"usdAmount\": 10,\r\n  \"currency\": \"BTC\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5000/api/game/bet",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"game",
+						"bet"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get-Wallet-Balance",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/api/wallet/68832ea8f80447df66cae42f",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"wallet",
+						"68832ea8f80447df66cae42f"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
