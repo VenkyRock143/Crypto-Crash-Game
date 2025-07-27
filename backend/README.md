@@ -26,7 +26,7 @@ This game simulates a crypto-style crash game where:
 * **WebSocket:** Socket.IO
 * **Database:** MongoDB + Mongoose
 * **API:** CoinMarketCap (crypto price fetch)
-* **Frontend (for testing):** Plain HTML + JS + Socket.IO client
+* **Frontend (for testing):React, Socket.IO client
 
 ---
 
@@ -34,37 +34,47 @@ This game simulates a crypto-style crash game where:
 
 ```
 Crypto-Crash-Game/
-├── controllers/
-│   ├── gameController.js
-│   ├── priceController.js
-│   └── walletController.js
-├── models/
-│   ├── Player.js
-│   ├── Round.js
-│   └── Transaction.js
-├── node_modules/
-├── public/
-│   └── test-client.html
-├── routes/
-│   ├── gameRoutes.js
-│   └── walletRoutes.js
-├── scripts/
-│   └── seed.js
-├── services/
-│   ├── crashAlgorithm.js
-│   ├── priceFetcher.js
-│   ├── priceService.js
-│   ├── socketService.js
-│   └── walletService.js
-├── websocket/
-│   └── socket.js
-├── .env
-├── .gitignore
-├── Crypto-Crash-Game.postman_collection.json
-├── package-lock.json
-├── package.json
+├── backend
+│   ├── controllers/
+│   │   ├── gameController.js
+│   │   ├── priceController.js
+│   │   └── walletController.js
+│   ├── models/
+│   │   ├── Player.js
+│   │  ├── Round.js
+│   │  └── Transaction.js
+│   ├── node_modules/
+│   ├── public/
+│   │   └── test-client.html
+│   ├── routes/
+│   │   ├── gameRoutes.js
+│   │   └── walletRoutes.js
+│   ├── scripts/
+│   │   └── seed.js
+│   ├── services/
+│   │   ├── crashAlgorithm.js
+│   │   ├── priceFetcher.js
+│   │   ├── priceService.js
+│   │   ├── socketService.js
+│   │   └── walletService.js
+│   ├── websocket/
+│   │   └── socket.js
+│   ├── .env
+│   ├── .gitignore
+│   ├── Crypto-Crash-Game.postman_collection.json
+│   ├── package-lock.json
+│   ├── package.json
+│   └── server.js
+├── frontend/
+│   ├── public/
+│   ├── src/
+│   │   ├── App.css
+│   │   ├── App.js
+│   │   └── index.js
+│   ├── .gitignore
+│   ├── package-lock.json
+│   └── package.json
 ├── README.md
-└── server.js
 ```
 
 ---
