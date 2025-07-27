@@ -45,7 +45,7 @@ export default function App() {
     }
 
     try {
-      const res = await fetch('https://crypto-crash-game-mqs3.onrender.com/api/game/bet', {
+      const res = await fetch('https://crypto-crash-game-as1x.onrender.com/api/game/bet', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ playerId, usdAmount: amount, currency })
@@ -128,7 +128,7 @@ export default function App() {
 
       <div style={{ marginTop: '20px', textAlign: 'center' }}>
         <a
-          href="https://crypto-crash-game-mqs3.onrender.com"
+          href="https://crypto-crash-game-as1x.onrender.com"
           target="_blank"
           rel="noopener noreferrer"
           style={{
