@@ -5,6 +5,7 @@ A real-time multiplayer crypto crash betting game, built with Node.js, Express, 
 ---
 
 **Live Demo (backend):** [Crypto-Crash-Game](https://crypto-crash-game-as1x.onrender.com/)
+---
 **Live Demo (frontend):** [Crypto-Crash-Game](https://venky-crypto-crash-game.netlify.app/)
 
 ---
