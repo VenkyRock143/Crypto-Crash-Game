@@ -25,10 +25,11 @@ This game simulates a crypto-style crash game where:
 ## 📁 Tech Stack
 
 * **Backend:** Node.js, Express
+* **Frontend:**React, Socket.IO client
 * **WebSocket:** Socket.IO
 * **Database:** MongoDB + Mongoose
 * **API:** CoinMarketCap (crypto price fetch)
-* **Frontend (for testing):React, Socket.IO client
+
 
 ---
 
@@ -91,6 +92,7 @@ cd Crypto-Crash-Game
 ```
 
 2. **Install dependencies:**
+
 
 ```bash
 npm install
