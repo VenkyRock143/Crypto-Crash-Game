@@ -93,9 +93,7 @@ cd Crypto-Crash-Game
 
 2. **Backend**
 
----
-
-**Install dependencies:**
+1.**Install dependencies:**
 
 ```bash
 cd backend
@@ -104,7 +102,7 @@ cd backend
 npm install
 ```
 
-3. **Create `.env` file in the root directory:**
+2. **Create `.env` file in the root directory:**
 
 ```env
 PORT=5000
@@ -113,19 +111,37 @@ CMC_API_KEY=your_coinmarketcap_api_key_here
 REDIS_URL=redis://default:<password>@<host>:<port>
 ```
 
-4. **Seed database with sample players:**
+3. **Seed database with sample players:**
 
 ```bash
 node scripts/seed.js
 ```
 
-5. **Start the server:**
+4. **Start the server:**
 
 ```bash
 node server.js
 ```
+2. **Frontend**
 
----
+1.**Install dependencies:**
+
+```bash
+cd frontend
+```
+```bash
+npm install
+```
+2. **Start development server locally:**
+```bash
+npm start
+```
+3.**Build for production (for Netlify):**
+
+```bash
+npm run build
+```
+
 
 ## 📦 API Endpoints
 
