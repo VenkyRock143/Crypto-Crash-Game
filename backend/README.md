@@ -90,9 +90,9 @@ Crypto-Crash-Game/
 git clone https://github.com/VenkyRock143/Crypto-Crash-Game.git
 cd Crypto-Crash-Game
 ```
---
-2. **Backend**
 
+2. **Backend**
+---
 1.**Install dependencies:**
 
 ```bash
@@ -123,7 +123,7 @@ node scripts/seed.js
 node server.js
 ```
 2. **Frontend**
-
+---
 1.**Install dependencies:**
 
 ```bash
