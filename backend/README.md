@@ -290,6 +290,4 @@ Working version with:
 * Database storage of rounds and transactions
 * Test client and Postman collection
 
-Feel free to fork and build more advanced versions (e.g., leaderboards, authentication, frontend frameworks).
-
 ---
