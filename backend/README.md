@@ -41,8 +41,8 @@ Crypto-Crash-Game/
 │   │   └── walletController.js
 │   ├── models/
 │   │   ├── Player.js
-│   │  ├── Round.js
-│   │  └── Transaction.js
+│   │   ├── Round.js
+│   │   └── Transaction.js
 │   ├── node_modules/
 │   ├── public/
 │   │   └── test-client.html
